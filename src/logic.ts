@@ -15,7 +15,7 @@ const createProduct = (req: Request, res: Response): Response => {
     ...data,
     expirationDate: date,
   };
-  
+
   market.push(newProduct);
   return res.status(201).json(newProduct);
 };
@@ -24,4 +24,14 @@ const readProducts = (req: Request, res: Response): Response => {
   return res.status(200).json(market);
 };
 
-export { createProduct, readProducts };
+const findProduct = (req: Request, res: Response): Response => {
+  const { productIndex } = res.locals
+
+  return res.status(200).json();
+};
+
+const updateProduct = (req: Request, res: Response): Response => {
+  return res.status(201).json();
+};
+
+export { createProduct, readProducts, findProduct, updateProduct };

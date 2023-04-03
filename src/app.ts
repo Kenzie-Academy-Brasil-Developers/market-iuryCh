@@ -1,5 +1,6 @@
 import express, { Application, json } from 'express';
 import { createProduct, readProducts } from './logic';
+import { ensureProductExist } from './middlewares';
 
 const app: Application = express();
 app.use(json());
@@ -9,7 +10,7 @@ app.post('/products', createProduct);
 //list all products
 app.get('/products', readProducts);
 //list especif product
-app.get('/products/:id');
+app.get('/products/:id', ensureProductExist);
 //update product
 app.patch('/products/:id');
 //delete product
