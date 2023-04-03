@@ -25,7 +25,7 @@ const readProducts = (req: Request, res: Response): Response => {
 };
 
 const findProduct = (req: Request, res: Response): Response => {
-  const { productIndex } = res.locals
+  const { productIndex } = res.locals;
 
   return res.status(200).json();
 };
@@ -34,4 +34,18 @@ const updateProduct = (req: Request, res: Response): Response => {
   return res.status(201).json();
 };
 
-export { createProduct, readProducts, findProduct, updateProduct };
+const eraseProduct = (req: Request, res: Response): Response => {
+  const { productIndex } = res.locals;
+
+  market.splice(productIndex, 1);
+
+  return res.status(204).json();
+};
+
+export {
+  createProduct,
+  readProducts,
+  findProduct,
+  updateProduct,
+  eraseProduct,
+};

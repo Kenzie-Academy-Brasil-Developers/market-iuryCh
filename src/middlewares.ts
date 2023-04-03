@@ -7,15 +7,37 @@ const ensureProductExist = (
   res: Response,
   next: NextFunction
 ): void | Response => {
-  const { name } = req.params;
+  const { id } = req.params;
 
-  const findProductIndex = market.findIndex((product) => product.name === name);
-  if (findProductIndex === -1) {
-    return res.status(409).json({ error: 'Product already registered' });
+  const findProductId: number = market.findIndex(
+    (product) => product.id === Number(id)
+  );
+  if (findProductId === -1) {
+    return res.status(404).json({ error: 'Product not found' });
   }
-  res.locals.productIndex = findProductIndex;
+  res.locals.productIndex = findProductId;
 
   return next();
 };
 
-export { ensureProductExist };
+const filterProductByName = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  const { name } = req.query;
+
+  const filterProducts: IProduct[] = market.filter(
+    (product) => product.name === name
+  );
+
+  if (filterProducts.length > 0) {
+    res.locals.product = filterProducts;
+    return next();
+  }
+  res.locals.product = market;
+
+  return next();
+};
+
+export { ensureProductExist, filterProductByName };
