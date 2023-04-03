@@ -11,7 +11,7 @@ const ensureProductExist = (
 
   const findProductIndex = market.findIndex((product) => product.name === name);
   if (findProductIndex === -1) {
-    return res.status(404).json({ error: 'product not found' });
+    return res.status(409).json({ error: 'Product already registered' });
   }
   res.locals.productIndex = findProductIndex;
 

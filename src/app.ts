@@ -12,7 +12,7 @@ app.get('/products', readProducts);
 //list especif product
 app.get('/products/:id', ensureProductExist);
 //update product
-app.patch('/products/:id');
+app.patch('/products/:id', ensureProductExist);
 //delete product
 app.delete('/products/:id');
 
