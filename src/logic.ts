@@ -38,7 +38,16 @@ const listProducts = (req: Request, res: Response): Response => {
 };
 
 const updateProduct = (req: Request, res: Response): Response => {
-  return res.status(201).json();
+  const IndexProductToUpdate = res.locals.product.productIndex;
+  console.log(IndexProductToUpdate);
+  const productUpdateData = req.body;
+
+  market[IndexProductToUpdate] = {
+    ...market[IndexProductToUpdate],
+    ...productUpdateData,
+  };
+
+  return res.status(200).json(market[IndexProductToUpdate]);
 };
 
 const eraseProduct = (req: Request, res: Response): Response => {

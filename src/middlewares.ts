@@ -30,17 +30,30 @@ const nonRepeatedProductName = (
   res: Response,
   next: NextFunction
 ): void | Response => {
-  const productData: Array<TRequestProduct> = req.body;
+  if (req.method === 'POST') {
+    const productData: Array<TRequestProduct> = req.body;
 
-  const checkRepeatedName = productData.some((product) =>
-    market.some((productMarket) => productMarket.name === product.name)
-  );
+    const checkRepeatedName = productData.some((product) =>
+      market.some((productMarket) => productMarket.name === product.name)
+    );
 
-  if (checkRepeatedName) {
-    return res.status(409).json({ error: 'Product already registered' });
+    if (checkRepeatedName) {
+      return res.status(409).json({ error: 'Product already registered' });
+    }
+
+    return next();
+  } else if (req.method === 'PATCH') {
+    const productData: TRequestProduct = req.body;
+
+    const checkRepeatedName = market.some(
+      (product) => productData.name === product.name
+    );
+    console.log(checkRepeatedName);
+    if (checkRepeatedName) {
+      return res.status(409).json({ error: 'Product already registered' });
+    }
+    return next();
   }
-
-  return next();
 };
 
 export { ensureProductExist, nonRepeatedProductName };
