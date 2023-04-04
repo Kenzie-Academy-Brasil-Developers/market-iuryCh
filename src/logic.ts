@@ -29,18 +29,12 @@ const createProduct = (req: Request, res: Response): Response => {
 
 const listProductById = (req: Request, res: Response): Response => {
   const productToSearch = res.locals.product.productIndex;
-  console.log(productToSearch);
+
   return res.status(200).json(market[productToSearch]);
 };
 
-const readProducts = (req: Request, res: Response): Response => {
+const listProducts = (req: Request, res: Response): Response => {
   return res.status(200).json(market);
-};
-
-const findProduct = (req: Request, res: Response): Response => {
-  const { productIndex } = res.locals;
-
-  return res.status(200).json();
 };
 
 const updateProduct = (req: Request, res: Response): Response => {
@@ -58,8 +52,7 @@ const eraseProduct = (req: Request, res: Response): Response => {
 export {
   createProduct,
   listProductById,
-  readProducts,
-  findProduct,
+  listProducts,
   updateProduct,
   eraseProduct,
 };

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { market } from './database';
-import { IProduct } from './interfaces';
+import { TRequestProduct } from './interfaces';
 
 const ensureProductExist = (
   req: Request,
@@ -30,16 +30,17 @@ const nonRepeatedProductName = (
   res: Response,
   next: NextFunction
 ): void => {
-  const { name } = req.query;
+  const productData: Array<TRequestProduct> = req.body;
 
-  const filteredProduct = market.filter((product) => product.name === name);
+  const filteredProduct = productData.some((product) =>
+    market.some((productMarket) => productMarket.name === product.name)
+  );
 
-  if (filteredProduct.length > 0) {
+  if (filteredProduct) {
     res.status(409).json({ error: 'Product already registered' });
     return next();
   }
 
-  res.locals.product = market;
   return next();
 };
 
