@@ -34,7 +34,12 @@ const listProductById = (req: Request, res: Response): Response => {
 };
 
 const listProducts = (req: Request, res: Response): Response => {
-  return res.status(200).json(market);
+  const total = market.reduce((pV, cV) => pV + cV.price, 0);
+
+  return res.status(200).json({
+    total: total,
+    marketProducts: market,
+  });
 };
 
 const updateProduct = (req: Request, res: Response): Response => {
