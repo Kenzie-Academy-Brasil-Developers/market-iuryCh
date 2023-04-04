@@ -29,16 +29,15 @@ const nonRepeatedProductName = (
   req: Request,
   res: Response,
   next: NextFunction
-): void => {
+): void | Response => {
   const productData: Array<TRequestProduct> = req.body;
 
-  const filteredProduct = productData.some((product) =>
+  const checkRepeatedName = productData.some((product) =>
     market.some((productMarket) => productMarket.name === product.name)
   );
 
-  if (filteredProduct) {
-    res.status(409).json({ error: 'Product already registered' });
-    return next();
+  if (checkRepeatedName) {
+    return res.status(409).json({ error: 'Product already registered' });
   }
 
   return next();
