@@ -9,35 +9,38 @@ const ensureProductExist = (
 ): void | Response => {
   const { id } = req.params;
 
-  const findProductId: number = market.findIndex(
+  const findProductIndex: number = market.findIndex(
     (product) => product.id === Number(id)
   );
-  if (findProductId === -1) {
+
+  if (findProductIndex === -1) {
     return res.status(404).json({ error: 'Product not found' });
   }
-  res.locals.productIndex = findProductId;
+
+  res.locals.product = {
+    productId: id,
+    productIndex: findProductIndex,
+  };
 
   return next();
 };
 
-const filterProductByName = (
+const nonRepeatedProductName = (
   req: Request,
   res: Response,
   next: NextFunction
 ): void => {
   const { name } = req.query;
 
-  const filterProducts: IProduct[] = market.filter(
-    (product) => product.name === name
-  );
+  const filteredProduct = market.filter((product) => product.name === name);
 
-  if (filterProducts.length > 0) {
-    res.locals.product = filterProducts;
+  if (filteredProduct.length > 0) {
+    res.status(409).json({ error: 'Product already registered' });
     return next();
   }
-  res.locals.product = market;
 
+  res.locals.product = market;
   return next();
 };
 
-export { ensureProductExist, filterProductByName };
+export { ensureProductExist, nonRepeatedProductName };

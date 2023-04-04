@@ -5,19 +5,26 @@ import { market } from './database';
 let incrementId = 1;
 
 const createProduct = (req: Request, res: Response): Response => {
-  const data: TRequestProduct = req.body;
+  const data: Array<TRequestProduct> = req.body;
 
   const date = new Date();
   date.setFullYear(date.getFullYear());
 
-  const newProduct: IProduct = {
-    id: incrementId++,
-    ...data,
-    expirationDate: date,
-  };
+  const total = data.reduce((pV, cV) => pV + cV.price, 0);
 
-  market.push(newProduct);
-  return res.status(201).json(newProduct);
+  const newProduct: Array<IProduct> = data.map((product) => {
+    return {
+      id: incrementId++,
+      ...product,
+      expirationDate: date,
+    };
+  });
+  market.push(...newProduct);
+
+  return res.status(201).json({
+    total: total,
+    marketProducts: market,
+  });
 };
 
 const readProducts = (req: Request, res: Response): Response => {
