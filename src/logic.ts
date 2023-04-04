@@ -27,6 +27,12 @@ const createProduct = (req: Request, res: Response): Response => {
   });
 };
 
+const listProductById = (req: Request, res: Response): Response => {
+  const productToSearch = res.locals.product.productIndex;
+  console.log(productToSearch);
+  return res.status(200).json(market[productToSearch]);
+};
+
 const readProducts = (req: Request, res: Response): Response => {
   return res.status(200).json(market);
 };
@@ -51,6 +57,7 @@ const eraseProduct = (req: Request, res: Response): Response => {
 
 export {
   createProduct,
+  listProductById,
   readProducts,
   findProduct,
   updateProduct,
